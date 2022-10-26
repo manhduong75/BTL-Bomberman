@@ -74,13 +74,15 @@ public class Level {
 			);
 		} else if (c == '*') {
 			this.game.addBrick(new Brick(x * 16 * App.scale, y * 16 * App.scale));
-		} else if (c == ' ') {
-			this.game.addGrass(new Grass(x * 16 * App.scale, y * 16 * App.scale));
 		} else if (c == '1') {
 			this.game.addEnemy(
 				new Balloom(x * 16 * App.scale, y * 16 * App.scale)
 			);
 		}
+
+		Grass grass = new Grass(x * 16 * App.scale, y * 16 * App.scale);
+		grass.getSprite().imageView.toBack();
+		this.game.addGrass(grass);
 	}
 
 	public int getWidth() {
