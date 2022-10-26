@@ -18,6 +18,9 @@ import oop.bomberman.entities.Grass;
 import oop.bomberman.entities.Movable;
 import oop.bomberman.entities.Player;
 import oop.bomberman.entities.Wall;
+import oop.bomberman.entities.powerup.BombItem;
+import oop.bomberman.entities.powerup.FlameItem;
+import oop.bomberman.entities.powerup.SpeedItem;
 import oop.bomberman.level.Level;
 import oop.bomberman.sprite.Sprite;
 
@@ -31,6 +34,9 @@ public class Game {
 	private List<Wall> walls = new ArrayList<>();
   private List<Grass> grasses = new ArrayList<>();
 	private List<Bomb> bombs = new ArrayList<>();
+	private List<BombItem> bombItems = new ArrayList<>();
+	private List<SpeedItem> speedItems = new ArrayList<>();
+	private List<FlameItem> flameItems = new ArrayList<>();
 	private List<EnemyComp> enemyComps = new ArrayList<>();
 
 	private Level level;
@@ -44,10 +50,15 @@ public class Game {
 
 		this.player.addCollisions(this.bricks);
 		this.player.addCollisions(this.walls);
+		this.player.addCollisions(this.bombs);
+		this.player.addCollisions(this.flameItems);
+		this.player.addCollisions(this.bombItems);
+		this.player.addCollisions(this.speedItems);
 
 		this.enemyComps.forEach(enemy -> {
 			enemy.getEntity().addCollisions(this.bricks);
 			enemy.getEntity().addCollisions(this.walls);
+			enemy.getEntity().addCollisions(this.bombs);
 		});
 
 		this.playerAnimator = new PlayerAnimator(this.player.getSprite());
@@ -94,6 +105,21 @@ public class Game {
 			wall.draw();
 		}
 
+		for (int i = 0; i < this.bombItems.size(); i++) {
+			BombItem bombItem = this.bombItems.get(i);
+			bombItem.draw();
+		}
+
+		for (int i = 0; i < this.speedItems.size(); i++) {
+			SpeedItem speedItem = this.speedItems.get(i);
+			speedItem.draw();
+		}
+
+		for (int i = 0; i < this.flameItems.size(); i++) {
+			FlameItem flameItem = this.flameItems.get(i);
+			flameItem.draw();
+		}
+
 		for (int i = 0; i < this.bombs.size(); i++) {
 			Bomb bomb = this.bombs.get(i);
 			bomb.draw();
@@ -125,6 +151,18 @@ public class Game {
 
 	public void addWall(Wall wall) {
 		this.walls.add(wall);
+	}
+
+	public void addBombItem(BombItem bombItem) {
+		this.bombItems.add(bombItem);
+	}
+
+	public void addFlameItem(FlameItem flameItem) {
+		this.flameItems.add(flameItem);
+	}
+
+	public void addSpeedItem(SpeedItem speedItem) {
+		this.speedItems.add(speedItem);
 	}
 
 	public void addEnemy(Movable enemy) {

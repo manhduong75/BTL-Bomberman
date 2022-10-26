@@ -13,6 +13,9 @@ import oop.bomberman.entities.Movable;
 import oop.bomberman.entities.Player;
 import oop.bomberman.entities.Wall;
 import oop.bomberman.entities.enemy.Balloom;
+import oop.bomberman.entities.powerup.BombItem;
+import oop.bomberman.entities.powerup.FlameItem;
+import oop.bomberman.entities.powerup.SpeedItem;
 import oop.bomberman.game.Game;
 
 public class Level {
@@ -78,6 +81,12 @@ public class Level {
 			this.game.addEnemy(
 				new Balloom(x * 16 * App.scale, y * 16 * App.scale)
 			);
+		} else if (c == 'b') {
+			this.game.addBombItem(new BombItem(x * 16 * App.scale, y * 16 * App.scale));
+		} else if (c == 'f') {
+			this.game.addFlameItem(new FlameItem(x * 16 * App.scale, y * 16 * App.scale));
+		} else if (c == 's') {
+			this.game.addSpeedItem(new SpeedItem(x * 16 * App.scale, y * 16 * App.scale));
 		}
 
 		Grass grass = new Grass(x * 16 * App.scale, y * 16 * App.scale);
