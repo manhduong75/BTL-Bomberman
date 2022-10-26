@@ -86,6 +86,10 @@ public abstract class Movable extends Entity {
 		this.collisions.addAll(entities);
 	}
 
+	public List<Entity> getCollisions() {
+		return this.collisions;
+	}
+
 	public void removeCollision(Entity entity) {
 		this.collisions.remove(entity);
 	}

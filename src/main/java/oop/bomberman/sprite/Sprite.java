@@ -11,6 +11,9 @@ public class Sprite {
 	public static Image wall = Sprite.createImage("wall");
 
 	public static Image bomb = Sprite.createImage("bomb");
+	public static Image bomb_exploded = Sprite.createImage("bomb_exploded");
+	public static Image explosion_horizontal = Sprite.createImage("explosion_horizontal");
+	public static Image explosion_vertical = Sprite.createImage("explosion_vertical");
 
 	public static Image player_up = Sprite.createImage("player_up");
 	public static Image player_down = Sprite.createImage("player_down");

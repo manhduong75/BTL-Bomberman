@@ -16,12 +16,13 @@ import oop.bomberman.entities.Bomb;
 import oop.bomberman.entities.Brick;
 import oop.bomberman.entities.Grass;
 import oop.bomberman.entities.Movable;
+import oop.bomberman.entities.Player;
 import oop.bomberman.entities.Wall;
 import oop.bomberman.level.Level;
 import oop.bomberman.sprite.Sprite;
 
 public class Game {
-	private Movable player;
+	private Player player;
 	private Controller playerController;
 	private Mover playerMover;
 	private PlayerAnimator playerAnimator;
@@ -56,13 +57,19 @@ public class Game {
 	}
 
 	public void update() {
+		this.bombs.removeIf(bomb -> bomb.isRemoved() == true);
+		this.bricks.removeIf(brick -> brick.isRemoved() == true);
+		this.enemyComps.removeIf(enemy -> enemy.getEntity().isRemoved() == true);
+		this.player.getCollisions().removeIf(collision -> collision.isRemoved() == true);
 		this.playerMover.update();
     this.playerAnimator.update(playerMover);
 
 		this.enemyComps.forEach(enemy -> {
 			enemy.getMover().update();
 			enemy.getAnimator().update(enemy.getMover());
+			enemy.getEntity().getCollisions().removeIf(collision -> collision.isRemoved() == true);
 		});
+		this.bombs.forEach(bomb -> bomb.update(this.player.getFlameLength()));
 
 		System.out.println(playerController.getInput());
 		if (playerController.getInput().contains("ENTER")) {
@@ -91,6 +98,12 @@ public class Game {
 			Bomb bomb = this.bombs.get(i);
 			bomb.draw();
 			bomb.getSprite().imageView.toFront();
+
+			if (bomb.isExplosed()) {
+				bomb.getFrames().forEach(frame -> {
+					frame.draw();
+				});
+			}
 		}
 
 		for (int i = 0; i < this.enemyComps.size(); i++) {
@@ -122,20 +135,34 @@ public class Game {
 		);
 	}
 
-	public void setPlayer(Movable player) {
+	public void setPlayer(Player player) {
 		this.player = player;
 		this.playerController = new Controller(App.scene);
     this.playerMover = new Mover(this.playerController, this.player);
 	}
 
 	public void addBomb() {
+		if (!this.player.canPlaceBomb()) {
+			return;
+		}
+		this.player.placeBomb();
+
 		int tileX = (int) this.player.getX() / 32;
 		int tileY = (int) this.player.getY() / 32;
 		int bombPositionX = tileX * 32;
 		int bombPosisionY = tileY * 32;
 
+		Bomb bomb = new Bomb(bombPositionX, bombPosisionY);
 		this.bombs.add(
-			new Bomb(bombPositionX, bombPosisionY)
+			bomb
 		);
+		bomb.addCollisions(this.walls);
+		bomb.addDestroyables(this.bricks);
+		bomb.setOwner(this.player);
+		this.player.addCollision(bomb);
+		this.enemyComps.forEach(enemy -> {
+			enemy.getEntity().addCollision(bomb);
+			bomb.addDestroyable(enemy.getEntity());
+		});
 	}
 }
