@@ -20,17 +20,12 @@ public class Game {
 	private Movable player;
 	private Controller playerController;
 	private Mover playerMover;
-	private Sprite playerSprite;
 	private PlayerAnimator playerAnimator;
 
 	private List<Brick> bricks = new ArrayList<>();
 	private List<Wall> walls = new ArrayList<>();
   private List<Grass> grasses = new ArrayList<>();
 	private List<Bomb> bombs = new ArrayList<>();
-	private List<Sprite> brickSprites = new ArrayList<>();
-	private List<Sprite> wallSprites = new ArrayList<>();
-	private List<Sprite> grassSprites = new ArrayList<>();
-	private List<Sprite> bombSprites = new ArrayList<>();
 
 	private Level level;
 
@@ -41,13 +36,10 @@ public class Game {
 		System.out.println("level " + this.level);
 		this.level.createEntities();
 
-		this.addGrassSprites();
-		this.addBrickSprites();
-		this.addWallSprites();
-		this.setPlayerSprite();
 		this.player.addCollisions(this.bricks);
 		this.player.addCollisions(this.walls);
-		this.playerAnimator = new PlayerAnimator(playerSprite);
+
+		this.playerAnimator = new PlayerAnimator(this.player.getSprite());
 
 		App.setWindowWidth(this.level.getWidth() * 16 * App.scale);
 		App.setWindowHeight(this.level.getHeight() * 16 * App.scale);
@@ -67,34 +59,26 @@ public class Game {
 	public void draw() {
 		for (int i = 0; i < this.grasses.size(); i++) {
 			Grass grass = this.grasses.get(i);
-			ImageView grassImageView = this.grassSprites.get(i).imageView;
-			grassImageView.setX(grass.getX());
-			grassImageView.setY(grass.getY());
+			grass.draw();
 		}
 		
 		for (int i = 0; i < this.bricks.size(); i++) {
 			Brick brick = this.bricks.get(i);
-			ImageView brickImageView = this.brickSprites.get(i).imageView;
-			brickImageView.setX(brick.getX());
-			brickImageView.setY(brick.getY());
+			brick.draw();
 		}
 
 		for (int i = 0; i < this.walls.size(); i++) {
 			Wall wall = this.walls.get(i);
-			ImageView wallImageView = this.wallSprites.get(i).imageView;
-			wallImageView.setX(wall.getX());
-			wallImageView.setY(wall.getY());
+			wall.draw();
 		}
 
 		for (int i = 0; i < this.bombs.size(); i++) {
 			Bomb bomb = this.bombs.get(i);
-			ImageView bombImageView = this.bombSprites.get(i).imageView;
-			bombImageView.setX(bomb.getX());
-			bombImageView.setY(bomb.getY());
-			bombImageView.toFront();
+			bomb.draw();
+			bomb.getSprite().imageView.toFront();
 		}
 
-		playerSprite.imageView.toFront();
+		this.player.getSprite().imageView.toFront();
 		this.playerAnimator.updateView(playerMover);
 	}
 
@@ -108,35 +92,6 @@ public class Game {
 
 	public void addWall(Wall wall) {
 		this.walls.add(wall);
-	}
-
-	public void addBrickSprites() {
-		this.bricks.forEach(b -> {
-			Sprite brickSprite = new Sprite(Sprite.brick);
-			this.brickSprites.add(brickSprite);
-			App.root.getChildren().add(brickSprite.imageView);
-		});
-	}
-
-	public void addGrassSprites() {
-		this.grasses.forEach(g -> {
-			Sprite grassSprite = new Sprite(Sprite.grass);
-			this.grassSprites.add(grassSprite);
-			App.root.getChildren().add(grassSprite.imageView);
-		});
-	}
-
-	public void addWallSprites() {
-		this.walls.forEach(w -> {
-			Sprite wallSprite = new Sprite(Sprite.wall);
-			this.wallSprites.add(wallSprite);
-			App.root.getChildren().add(wallSprite.imageView);
-		});
-	}
-
-	public void setPlayerSprite() {
-		this.playerSprite = new Sprite(Sprite.player_down);
-		App.root.getChildren().add(playerSprite.imageView);
 	}
 
 	public void setPlayer(Movable player) {
@@ -154,8 +109,5 @@ public class Game {
 		this.bombs.add(
 			new Bomb(bombPositionX, bombPosisionY)
 		);
-		Sprite bombSprite = new Sprite(Sprite.bomb);
-		this.bombSprites.add(bombSprite);
-		App.root.getChildren().add(bombSprite.imageView);
 	}
 }

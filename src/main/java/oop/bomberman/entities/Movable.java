@@ -3,6 +3,8 @@ package oop.bomberman.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import oop.bomberman.sprite.Sprite;
+
 public class Movable extends Entity {
 	private double velocity = 2;
 	private boolean isFacingRight = false;
@@ -13,7 +15,7 @@ public class Movable extends Entity {
 	private ArrayList<Entity> collisions = new ArrayList<>();
 
 	public Movable(double width, double height, double x, double y) {
-		super(width, height, x, y);
+		super(width, height, x, y, Sprite.player_down);
 	}
 
 	public double getVelocity() {

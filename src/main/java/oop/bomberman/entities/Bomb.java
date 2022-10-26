@@ -1,5 +1,7 @@
 package oop.bomberman.entities;
 
+import oop.bomberman.sprite.Sprite;
+
 public class Bomb extends Entity {
 	private int timeToExplosing = 120;
 	private int timeAfterExplosion = 60;
@@ -7,7 +9,7 @@ public class Bomb extends Entity {
 	private boolean explosed = false;
 	private boolean removed = false;
 	public Bomb(int x, int y) {
-		super(32, 32, x, y);
+		super(32, 32, x, y, Sprite.bomb);
 	}
 
 	public void update() {
