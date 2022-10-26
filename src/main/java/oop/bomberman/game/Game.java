@@ -5,8 +5,12 @@ import java.util.List;
 
 import javafx.scene.image.ImageView;
 import oop.bomberman.App;
+import oop.bomberman.animator.BalloomAnimator;
+import oop.bomberman.animator.EnemyAnimator;
 import oop.bomberman.animator.PlayerAnimator;
 import oop.bomberman.controlller.Controller;
+import oop.bomberman.controlller.EnemyComp;
+import oop.bomberman.controlller.EnemyMover;
 import oop.bomberman.controlller.Mover;
 import oop.bomberman.entities.Bomb;
 import oop.bomberman.entities.Brick;
@@ -26,6 +30,7 @@ public class Game {
 	private List<Wall> walls = new ArrayList<>();
   private List<Grass> grasses = new ArrayList<>();
 	private List<Bomb> bombs = new ArrayList<>();
+	private List<EnemyComp> enemyComps = new ArrayList<>();
 
 	private Level level;
 
@@ -39,6 +44,11 @@ public class Game {
 		this.player.addCollisions(this.bricks);
 		this.player.addCollisions(this.walls);
 
+		this.enemyComps.forEach(enemy -> {
+			enemy.getEntity().addCollisions(this.bricks);
+			enemy.getEntity().addCollisions(this.walls);
+		});
+
 		this.playerAnimator = new PlayerAnimator(this.player.getSprite());
 
 		App.setWindowWidth(this.level.getWidth() * 16 * App.scale);
@@ -48,6 +58,11 @@ public class Game {
 	public void update() {
 		this.playerMover.update();
     this.playerAnimator.update(playerMover);
+
+		this.enemyComps.forEach(enemy -> {
+			enemy.getMover().update();
+			enemy.getAnimator().update(enemy.getMover());
+		});
 
 		System.out.println(playerController.getInput());
 		if (playerController.getInput().contains("ENTER")) {
@@ -78,6 +93,11 @@ public class Game {
 			bomb.getSprite().imageView.toFront();
 		}
 
+		for (int i = 0; i < this.enemyComps.size(); i++) {
+			EnemyComp enemyComp = this.enemyComps.get(i);
+			enemyComp.getAnimator().updateView(enemyComp.getMover());
+		}
+
 		this.player.getSprite().imageView.toFront();
 		this.playerAnimator.updateView(playerMover);
 	}
@@ -92,6 +112,14 @@ public class Game {
 
 	public void addWall(Wall wall) {
 		this.walls.add(wall);
+	}
+
+	public void addEnemy(Movable enemy) {
+		EnemyMover mover = new EnemyMover(enemy);
+		EnemyAnimator animator = new BalloomAnimator(enemy.getSprite());
+		this.enemyComps.add(
+			new EnemyComp(enemy, mover, animator)
+		);
 	}
 
 	public void setPlayer(Movable player) {

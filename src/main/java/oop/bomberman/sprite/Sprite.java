@@ -29,6 +29,16 @@ public class Sprite {
 	public static Image player_left_1 = Sprite.createImage("player_left_1");
 	public static Image player_left_2 = Sprite.createImage("player_left_2");
 
+	public static Image balloom_dead = Sprite.createImage("balloom_dead");
+
+	public static Image balloom_left1 = Sprite.createImage("balloom_left1");
+	public static Image balloom_left2 = Sprite.createImage("balloom_left2");
+	public static Image balloom_left3 = Sprite.createImage("balloom_left3");
+
+	public static Image balloom_right1 = Sprite.createImage("balloom_right1");
+	public static Image balloom_right2 = Sprite.createImage("balloom_right2");
+	public static Image balloom_right3 = Sprite.createImage("balloom_right3");
+
 	public Sprite(Image image) {
 		try {
 			ImageView spriteImageView = new ImageView(image);
