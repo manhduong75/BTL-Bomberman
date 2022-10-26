@@ -105,6 +105,7 @@ public abstract class Movable extends Entity {
 					(this.getX() > c.getX() && this.getX() + this.getWidth() < c.getX() + c.getWidth()) ||
 					(this.getX() + this.getWidth() > c.getX() && this.getX() + this.getWidth() < c.getX() + c.getWidth()) )) {
 						collided = "UP";
+						this.setY(c.getY() + c.getHeight());
 						this.onCollision(c);
 						System.out.println(": Collided Upward");
 						return "UP";
@@ -116,6 +117,7 @@ public abstract class Movable extends Entity {
 							(this.getX() > c.getX() && this.getX() + this.getWidth() < c.getX() + c.getWidth()) ||
 							(this.getX() + this.getWidth() > c.getX()&& this.getX() + this.getWidth() < c.getX() + c.getWidth()) )) {
 								collided = "DOWN";
+								this.setY(c.getY() - this.getHeight());
 								this.onCollision(c);
 								System.out.println(": Collided downward");
 								return "DOWN";
@@ -138,6 +140,7 @@ public abstract class Movable extends Entity {
                         (this.getY() + this.getHeight() > c.getY() && this.getY() + this.getHeight() < c.getY() + c.getHeight()))) {
 
                     collided = "RIGHT";
+										this.setX(c.getX() - this.getWidth());
 										this.onCollision(c);
                     System.out.println(": Collided rightward");
 										return "RIGHT";
@@ -149,6 +152,7 @@ public abstract class Movable extends Entity {
                   (this.getY() > c.getY() && this.getY() + this.getHeight() < c.getY() + c.getHeight()) ||
                   (this.getY() + this.getHeight() > c.getY() && this.getY() + this.getHeight() < c.getY() + c.getHeight()))) {
                     collided = "LEFT";
+										this.setX(c.getX() + c.getWidth());
 										this.onCollision(c);
                     System.out.println("Collided leftward");
 										return "LEFT";
