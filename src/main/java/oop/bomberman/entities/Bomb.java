@@ -60,9 +60,8 @@ public class Bomb extends Entity {
 
 	public void remove() {
 		this.owner.afterBombExplosed();
+		this.frames.forEach(frame -> frame.remove());
 		super.remove();
-		App.root.getChildren().remove(this.getSprite().imageView);
-		this.frames.forEach(frame -> App.root.getChildren().remove(frame.getSprite().imageView));
 		this.frames.clear();
 	}
 

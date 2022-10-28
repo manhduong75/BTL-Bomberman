@@ -23,12 +23,16 @@ import oop.bomberman.entities.powerup.FlameItem;
 import oop.bomberman.entities.powerup.SpeedItem;
 import oop.bomberman.level.Level;
 import oop.bomberman.sprite.Sprite;
+import oop.bomberman.state.IState;
 
-public class Game {
+public class Game implements IState {
+	public static double MAIN_BOARD_OFFSET = 80;
+
 	private Player player;
 	private Controller playerController;
 	private Mover playerMover;
 	private PlayerAnimator playerAnimator;
+	private boolean pause = false;
 
 	private List<Brick> bricks = new ArrayList<>();
 	private List<Wall> walls = new ArrayList<>();
@@ -38,6 +42,9 @@ public class Game {
 	private List<SpeedItem> speedItems = new ArrayList<>();
 	private List<FlameItem> flameItems = new ArrayList<>();
 	private List<EnemyComp> enemyComps = new ArrayList<>();
+
+	private GamePanel gamePanel;
+	private GameModal gameModal;
 
 	private Level level;
 
@@ -59,16 +66,47 @@ public class Game {
 			enemy.getEntity().addCollisions(this.bricks);
 			enemy.getEntity().addCollisions(this.walls);
 			enemy.getEntity().addCollisions(this.bombs);
+			this.player.addCollision(enemy.getEntity());
 		});
 
 		this.playerAnimator = new PlayerAnimator(this.player.getSprite());
 
+		this.gamePanel = new GamePanel();
+		
 		App.setWindowWidth(this.level.getWidth() * 16 * App.scale);
-		App.setWindowHeight(this.level.getHeight() * 16 * App.scale);
+		App.setWindowHeight(this.level.getHeight() * 16 * App.scale + MAIN_BOARD_OFFSET);
+
+		this.gameModal = new GameModal();
+		this.gameModal.onModalClose(() -> {
+			this.pause = false;
+			System.out.println("hi");
+		});
 	}
 
-	public void update() {
-		this.bombs.removeIf(bomb -> bomb.isRemoved() == true);
+	public void update(long currentTime) {
+		if (this.pause) {
+			return;
+		} 
+		
+		if (this.player.isDead()) return;
+
+		if (playerController.getInput().contains("SPACE")) {
+			System.out.println("why ?");
+			this.pause = true;
+			gameModal.open();
+			return;
+		}
+
+
+		if (playerController.getInput().contains("ENTER")) {
+			System.out.println("enter");
+			this.addBomb();
+		}
+
+		this.bombs.removeIf(bomb -> {
+			bomb.getFrames().removeIf((f) -> bomb.isRemoved());
+			return bomb.isRemoved();
+		});
 		this.bricks.removeIf(brick -> brick.isRemoved() == true);
 		this.enemyComps.removeIf(enemy -> enemy.getEntity().isRemoved() == true);
 		this.player.getCollisions().removeIf(collision -> collision.isRemoved() == true);
@@ -83,13 +121,11 @@ public class Game {
 		this.bombs.forEach(bomb -> bomb.update(this.player.getFlameLength()));
 
 		System.out.println(playerController.getInput());
-		if (playerController.getInput().contains("ENTER")) {
-			System.out.println("enter");
-			this.addBomb();
-		}
 	}
 
 	public void draw() {
+		this.gamePanel.draw(this.player);
+
 		for (int i = 0; i < this.grasses.size(); i++) {
 			Grass grass = this.grasses.get(i);
 			grass.draw();
@@ -196,11 +232,36 @@ public class Game {
 		);
 		bomb.addCollisions(this.walls);
 		bomb.addDestroyables(this.bricks);
+		bomb.addDestroyable(this.player);
 		bomb.setOwner(this.player);
 		this.player.addCollision(bomb);
 		this.enemyComps.forEach(enemy -> {
 			enemy.getEntity().addCollision(bomb);
 			bomb.addDestroyable(enemy.getEntity());
 		});
+	}
+
+	@Override
+	public void onEnter() {
+		
+	}
+
+	@Override
+	public void onExit() {
+		this.bombs.clear();
+		this.bombItems.clear();
+		this.bricks.clear();
+		this.grasses.clear();
+		this.walls.clear();
+		this.flameItems.clear();
+		this.speedItems.clear();
+		this.enemyComps.clear();
+		this.player = null;
+		App.root.getChildren().clear();
+	}
+
+	@Override
+	public void onClose() {
+		
 	}
 }

@@ -1,0 +1,4 @@
+.button {
+  -fx-background-color: #58cc02;
+  -fx-effect: dropshadow(three-pass-box, #58a700, 0, 0, 0, 5px);
+}

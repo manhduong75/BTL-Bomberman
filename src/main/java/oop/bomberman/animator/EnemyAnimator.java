@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.util.Duration;
 import oop.bomberman.controlller.EnemyMover;
 import oop.bomberman.controlller.Mover;
+import oop.bomberman.game.Game;
 import oop.bomberman.sprite.Sprite;
 
 public abstract class EnemyAnimator extends Transition {
@@ -56,7 +57,7 @@ public abstract class EnemyAnimator extends Transition {
 	}
 
 	public void updateView(EnemyMover mover) {
-		this.sprite.imageView.relocate(mover.getEntity().getX(), mover.getEntity().getY());
+		this.sprite.imageView.relocate(mover.getEntity().getX(), mover.getEntity().getY() + Game.MAIN_BOARD_OFFSET);
 	}
 
 	@Override

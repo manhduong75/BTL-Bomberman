@@ -1,0 +1,21 @@
+.root {
+  -fx-font-size: 16px;
+  -fx-font-family: Roboto;
+  -fx-text-fill: white;
+  -fx-background-color: black;
+}
+
+.button {
+  -fx-padding: 20px 20px 20px 20px;
+  -fx-text-fill: white;
+  -fx-font-weight: bold;
+  -fx-cursor: hand;
+  -fx-border-radius: 17px;
+  -fx-background-color: #58cc02;
+  -fx-effect: dropshadow(three-pass-box, #58a700, 0, 0, 0, 5px);
+}
+
+.button:pressed {
+  -fx-effect: dropshadow(three-pass-box, transparent, 0, 0, 0, 0);
+  -fx-translate-y: 5px;
+}

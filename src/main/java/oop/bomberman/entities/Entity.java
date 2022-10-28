@@ -3,6 +3,7 @@ package oop.bomberman.entities;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import oop.bomberman.App;
+import oop.bomberman.game.Game;
 import oop.bomberman.sprite.Sprite;
 
 public abstract class Entity extends Rectangle {
@@ -40,7 +41,7 @@ public abstract class Entity extends Rectangle {
 
 	public void draw() {
 		this.sprite.imageView.setX(this.getX());
-		this.sprite.imageView.setY(this.getY());
+		this.sprite.imageView.setY(this.getY() + Game.MAIN_BOARD_OFFSET);
 	}
 
 	public Sprite getSprite() {
@@ -50,8 +51,10 @@ public abstract class Entity extends Rectangle {
 	public void remove() {
 		this.setWidth(0);
 		this.setHeight(0);
-		this.setX(0);
-		this.setY(0);
+		this.setX(-64);
+		this.setY(-64);
+		this.sprite.imageView.setImage(null);
+		App.root.getChildren().remove(this.sprite.imageView);
 		this.removed = true;
 	}
 

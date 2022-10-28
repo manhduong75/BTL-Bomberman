@@ -1,6 +1,7 @@
 package oop.bomberman.entities;
 
 import oop.bomberman.App;
+import oop.bomberman.entities.enemy.Balloom;
 import oop.bomberman.entities.powerup.BombItem;
 import oop.bomberman.entities.powerup.FlameItem;
 import oop.bomberman.entities.powerup.SpeedItem;
@@ -14,6 +15,7 @@ public class Player extends Movable {
 	private int remainingBombCount = maxBombCount;
 	private long lastPlaceBombAt = 0;
 	private int placeBombWaitingTime = 400;
+	private boolean dead = false;
 
 	public void increaseFlameLength() {
 		this.flameLength++;
@@ -53,6 +55,20 @@ public class Player extends Movable {
 		} else if (entity instanceof FlameItem) {
 			this.increaseFlameLength();
 			entity.remove();
+		} else if (entity instanceof Balloom) {
+			this.remove();
 		}
+	}
+
+	public void remove() {
+		this.dead = true;
+	}
+
+	public boolean isDead() {
+		return this.dead;
+	}
+
+	public int getBombRemainingNum() {
+		return this.remainingBombCount;
 	}
 }

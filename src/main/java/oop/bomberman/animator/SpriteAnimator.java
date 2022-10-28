@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import oop.bomberman.controlller.Mover;
+import oop.bomberman.game.Game;
 import oop.bomberman.sprite.Sprite;
 
 public class SpriteAnimator extends Transition {
@@ -73,7 +74,7 @@ public class SpriteAnimator extends Transition {
 
 	public void updateView(Mover mover) {		
 		ImageView imageView = this.sprite.imageView;
-		this.sprite.imageView.relocate(mover.getEntity().getX() - (32 - mover.getEntity().getWidth()) / 2, mover.getEntity().getY() - (32 - mover.getEntity().getHeight()));
+		this.sprite.imageView.relocate(mover.getEntity().getX() - (32 - mover.getEntity().getWidth()) / 2, mover.getEntity().getY() - (32 - mover.getEntity().getHeight()) + Game.MAIN_BOARD_OFFSET);
 	}
 
 	@Override
