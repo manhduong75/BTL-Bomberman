@@ -81,7 +81,6 @@ public class Mover {
 
 	public void updatePosition() throws NullPointerException {
 		if (this.isMovingRight()) {
-			System.out.println("is moving right");
 			if (movable.isFacingRight() && movable.getHorizontalCollision() == "NONE") {
 				movable.setX(movable.getX() + movable.getVelocity());
 			} else {

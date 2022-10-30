@@ -82,7 +82,6 @@ public class EnemyMover {
 	private void nextMove() {
 		MovingDirection nextDirection = directionValues.get(random.nextInt(directionValues.size()));
 		this.movingDirection = nextDirection;
-		System.out.println(this.movingDirection);
 		this.currentMovingTime = 0;
 	}
 

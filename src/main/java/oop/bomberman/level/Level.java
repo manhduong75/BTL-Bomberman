@@ -61,7 +61,6 @@ public class Level {
 	public void createEntities() {
 		for (int y = 0; y < this.height; y++) {
 			for (int x = 0; x < this.width; x++) {
-				System.out.println("this.lineTiles[y]" + this.lineTiles[y] + " length = " + this.lineTiles[y].length());
 				addLevelEntity(this.lineTiles[y].charAt(x), x, y);
 			}
 		}
@@ -69,7 +68,6 @@ public class Level {
 
 	public void addLevelEntity(char c, int x, int y) {
 
-		System.out.println("game " + this.game);
 		if (c == '#') {
 			this.game.addWall(new Wall(x * 16 * App.scale, y * 16 * App.scale));
 		} else if (c == 'p') {

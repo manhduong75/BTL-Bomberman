@@ -107,7 +107,6 @@ public abstract class Movable extends Entity {
 						collided = "UP";
 						this.setY(c.getY() + c.getHeight());
 						this.onCollision(c);
-						System.out.println(": Collided Upward");
 						return "UP";
 				}
       } else if (this.isFacingDown) {
@@ -119,7 +118,6 @@ public abstract class Movable extends Entity {
 								collided = "DOWN";
 								this.setY(c.getY() - this.getHeight());
 								this.onCollision(c);
-								System.out.println(": Collided downward");
 								return "DOWN";
         }
 			}
@@ -142,7 +140,6 @@ public abstract class Movable extends Entity {
                     collided = "RIGHT";
 										this.setX(c.getX() - this.getWidth());
 										this.onCollision(c);
-                    System.out.println(": Collided rightward");
 										return "RIGHT";
                 }
             } else if (this.isFacingLeft) {
@@ -154,7 +151,6 @@ public abstract class Movable extends Entity {
                     collided = "LEFT";
 										this.setX(c.getX() + c.getWidth());
 										this.onCollision(c);
-                    System.out.println("Collided leftward");
 										return "LEFT";
                 }
             }

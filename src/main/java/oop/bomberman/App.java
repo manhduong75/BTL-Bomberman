@@ -63,13 +63,11 @@ public class App extends Application {
 
     public static void setWindowWidth(double width) {
         App.windowWidth = width;
-        System.out.println("width " + width);
         App.scene.getWindow().setWidth(width + 16);
     }
 
     public static void setWindowHeight(double height) {
         App.windowHeight = height;
-        System.out.println("height " + height);
         App.scene.getWindow().setHeight(height + 40);
     }
 

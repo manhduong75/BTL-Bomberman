@@ -56,7 +56,6 @@ public class Game implements IState {
 
 	public void init() {
 		this.level = new Level(String.format("levels/Level%d.txt", App.getCurrentLevel()), this);
-		System.out.println("level " + this.level);
 		this.level.createEntities();
 
 		this.player.addCollisions(this.bricks);
@@ -101,7 +100,6 @@ public class Game implements IState {
 		}
 
 		if (playerController.getInput().contains("SPACE")) {
-			System.out.println("why ?");
 			this.pause = true;
 			gameModal.open();
 			return;
@@ -109,7 +107,6 @@ public class Game implements IState {
 
 
 		if (playerController.getInput().contains("ENTER")) {
-			System.out.println("enter");
 			this.addBomb();
 		}
 
@@ -133,7 +130,6 @@ public class Game implements IState {
 		});
 		this.bombs.forEach(bomb -> bomb.update(this.player.getFlameLength()));
 
-		System.out.println(playerController.getInput());
 	}
 
 	public void draw() {
