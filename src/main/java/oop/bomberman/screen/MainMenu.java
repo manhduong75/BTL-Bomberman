@@ -1,4 +1,4 @@
-package oop.bomberman.menu;
+package oop.bomberman.screen;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

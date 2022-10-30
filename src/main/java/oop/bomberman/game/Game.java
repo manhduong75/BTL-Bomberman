@@ -17,13 +17,16 @@ import oop.bomberman.entities.Brick;
 import oop.bomberman.entities.Grass;
 import oop.bomberman.entities.Movable;
 import oop.bomberman.entities.Player;
+import oop.bomberman.entities.Portal;
 import oop.bomberman.entities.Wall;
 import oop.bomberman.entities.powerup.BombItem;
 import oop.bomberman.entities.powerup.FlameItem;
 import oop.bomberman.entities.powerup.SpeedItem;
 import oop.bomberman.level.Level;
+import oop.bomberman.screen.FinishScreen;
 import oop.bomberman.sprite.Sprite;
 import oop.bomberman.state.IState;
+import oop.bomberman.state.StateStack;
 
 public class Game implements IState {
 	public static double MAIN_BOARD_OFFSET = 80;
@@ -38,6 +41,7 @@ public class Game implements IState {
 	private List<Wall> walls = new ArrayList<>();
   private List<Grass> grasses = new ArrayList<>();
 	private List<Bomb> bombs = new ArrayList<>();
+	private List<Portal> portals = new ArrayList<>();
 	private List<BombItem> bombItems = new ArrayList<>();
 	private List<SpeedItem> speedItems = new ArrayList<>();
 	private List<FlameItem> flameItems = new ArrayList<>();
@@ -51,13 +55,14 @@ public class Game implements IState {
 	public Game() {}
 
 	public void init() {
-		this.level = new Level("levels/Level1.txt", this);
+		this.level = new Level(String.format("levels/Level%d.txt", App.getCurrentLevel()), this);
 		System.out.println("level " + this.level);
 		this.level.createEntities();
 
 		this.player.addCollisions(this.bricks);
 		this.player.addCollisions(this.walls);
 		this.player.addCollisions(this.bombs);
+		this.player.addCollisions(this.portals);
 		this.player.addCollisions(this.flameItems);
 		this.player.addCollisions(this.bombItems);
 		this.player.addCollisions(this.speedItems);
@@ -88,7 +93,12 @@ public class Game implements IState {
 			return;
 		} 
 		
-		if (this.player.isDead()) return;
+		if (this.player.isDead()) {
+			FinishScreen.setWin(false);
+			StateStack.pop();
+			StateStack.push("finish-screen");
+			return;
+		}
 
 		if (playerController.getInput().contains("SPACE")) {
 			System.out.println("why ?");
@@ -109,6 +119,9 @@ public class Game implements IState {
 		});
 		this.bricks.removeIf(brick -> brick.isRemoved() == true);
 		this.enemyComps.removeIf(enemy -> enemy.getEntity().isRemoved() == true);
+		if (this.enemyComps.size() == 0) {
+			this.player.setCanPromoteToNextLevel();
+		}
 		this.player.getCollisions().removeIf(collision -> collision.isRemoved() == true);
 		this.playerMover.update();
     this.playerAnimator.update(playerMover);
@@ -139,6 +152,11 @@ public class Game implements IState {
 		for (int i = 0; i < this.walls.size(); i++) {
 			Wall wall = this.walls.get(i);
 			wall.draw();
+		}
+
+		for (int i = 0; i < this.portals.size(); i++) {
+			Portal portal = this.portals.get(i);
+			portal.draw();
 		}
 
 		for (int i = 0; i < this.bombItems.size(); i++) {
@@ -189,6 +207,10 @@ public class Game implements IState {
 		this.walls.add(wall);
 	}
 
+	public void addPortal(Portal portal) {
+		this.portals.add(portal);
+	}
+
 	public void addBombItem(BombItem bombItem) {
 		this.bombItems.add(bombItem);
 	}
@@ -221,8 +243,8 @@ public class Game implements IState {
 		}
 		this.player.placeBomb();
 
-		int tileX = (int) this.player.getX() / 32;
-		int tileY = (int) this.player.getY() / 32;
+		int tileX = ((int) this.player.getX() + 12) / 32;
+		int tileY = ((int) this.player.getY() + 8) / 32;
 		int bombPositionX = tileX * 32;
 		int bombPosisionY = tileY * 32;
 
@@ -232,6 +254,7 @@ public class Game implements IState {
 		);
 		bomb.addCollisions(this.walls);
 		bomb.addDestroyables(this.bricks);
+		bomb.addDestroyables(this.portals);
 		bomb.addDestroyable(this.player);
 		bomb.setOwner(this.player);
 		this.player.addCollision(bomb);
@@ -253,6 +276,7 @@ public class Game implements IState {
 		this.bricks.clear();
 		this.grasses.clear();
 		this.walls.clear();
+		this.portals.clear();
 		this.flameItems.clear();
 		this.speedItems.clear();
 		this.enemyComps.clear();

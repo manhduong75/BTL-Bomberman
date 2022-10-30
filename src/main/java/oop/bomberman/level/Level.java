@@ -11,6 +11,7 @@ import oop.bomberman.entities.Brick;
 import oop.bomberman.entities.Grass;
 import oop.bomberman.entities.Movable;
 import oop.bomberman.entities.Player;
+import oop.bomberman.entities.Portal;
 import oop.bomberman.entities.Wall;
 import oop.bomberman.entities.enemy.Balloom;
 import oop.bomberman.entities.powerup.BombItem;
@@ -77,6 +78,8 @@ public class Level {
 			);
 		} else if (c == '*') {
 			this.game.addBrick(new Brick(x * 16 * App.scale, y * 16 * App.scale));
+		} else if (c == 'x') {
+			this.game.addPortal(new Portal(x * 16 * App.scale, y * 16 * App.scale));
 		} else if (c == '1') {
 			this.game.addEnemy(
 				new Balloom(x * 16 * App.scale, y * 16 * App.scale)

@@ -12,7 +12,7 @@ public abstract class Movable extends Entity {
 	private boolean isFacingUp = false;
 	private boolean isFacingLeft = false;
 
-	private ArrayList<Entity> collisions = new ArrayList<>();
+	public ArrayList<Entity> collisions = new ArrayList<>();
 
 	public Movable(double width, double height, double x, double y) {
 		super(width, height, x, y, Sprite.player_down);

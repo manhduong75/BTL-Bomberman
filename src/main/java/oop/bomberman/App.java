@@ -8,7 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import oop.bomberman.game.Game;
 import oop.bomberman.game.GameModal;
-import oop.bomberman.menu.MainMenu;
+import oop.bomberman.screen.FinishScreen;
+import oop.bomberman.screen.MainMenu;
 import oop.bomberman.state.StateStack;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class App extends Application {
     private static double windowWidth;
     private static double windowHeight;
     public static GameModal gameModal;
+    private static int currentLevel = 1;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -36,6 +38,7 @@ public class App extends Application {
 
         StateStack.addState("mainmenu", new MainMenu());
         StateStack.addState("game", new Game());
+        StateStack.addState("finish-screen", new FinishScreen(false));
 
         StateStack.push("game");
 
@@ -81,4 +84,12 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }  
+
+    public static int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public static void setCurrentLevel(int currentLevel) {
+        App.currentLevel = currentLevel;
+    }
 }

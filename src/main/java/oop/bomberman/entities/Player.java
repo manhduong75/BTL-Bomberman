@@ -1,10 +1,15 @@
 package oop.bomberman.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import oop.bomberman.App;
 import oop.bomberman.entities.enemy.Balloom;
 import oop.bomberman.entities.powerup.BombItem;
 import oop.bomberman.entities.powerup.FlameItem;
 import oop.bomberman.entities.powerup.SpeedItem;
+import oop.bomberman.screen.FinishScreen;
+import oop.bomberman.state.StateStack;
 
 public class Player extends Movable {
 	public Player(int x, int y) {
@@ -15,7 +20,9 @@ public class Player extends Movable {
 	private int remainingBombCount = maxBombCount;
 	private long lastPlaceBombAt = 0;
 	private int placeBombWaitingTime = 400;
+	private boolean canPromoteToNextLevel = false;
 	private boolean dead = false;
+	public List<Entity> preparedCollisions = new ArrayList<>();
 
 	public void increaseFlameLength() {
 		this.flameLength++;
@@ -57,7 +64,30 @@ public class Player extends Movable {
 			entity.remove();
 		} else if (entity instanceof Balloom) {
 			this.remove();
+		} else if (entity instanceof Portal) {
+			Portal portal = (Portal)entity;
+			if (portal.isDiscovered() && canPromoteToNextLevel) {
+				FinishScreen.setWin(true);
+				StateStack.pop();
+				StateStack.push("finish-screen");
+			} else {
+				System.out.println("must destroy all enemy first");
+			}
 		}
+	}
+
+	@Override
+	public void addCollision(Entity collision) {
+		this.preparedCollisions.add(collision);		
+	}
+
+	@Override
+	public void addCollisions(List<? extends Entity> collisions) {
+		this.preparedCollisions.addAll(collisions);
+	}
+
+	public void setCanPromoteToNextLevel() {
+		this.canPromoteToNextLevel = true;
 	}
 
 	public void remove() {

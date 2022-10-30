@@ -46,6 +46,8 @@ public class Sprite {
 	public static Image powerup_speed = Sprite.createImage("powerup_speed");
 	public static Image powerup_flames = Sprite.createImage("powerup_flames");
 
+	public static Image portal = Sprite.createImage("portal");
+
 	public Sprite(Image image) {
 		try {
 			ImageView spriteImageView = new ImageView(image);

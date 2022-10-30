@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import oop.bomberman.App;
+import oop.bomberman.entities.enemy.Balloom;
 import oop.bomberman.sprite.Sprite;
 
 public class Bomb extends Entity {
@@ -25,6 +26,7 @@ public class Bomb extends Entity {
 	}
 
 	public void update(int flameLength) {
+
 		this.destroy();
 		if (!this.explosed) {
 			if (this.currentTime < this.timeToExplosing) {

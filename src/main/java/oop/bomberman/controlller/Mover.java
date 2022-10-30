@@ -2,7 +2,11 @@ package oop.bomberman.controlller;
 
 import java.util.ArrayList;
 
+import oop.bomberman.entities.Bomb;
+import oop.bomberman.entities.Entity;
 import oop.bomberman.entities.Movable;
+import oop.bomberman.entities.Player;
+import oop.bomberman.entities.enemy.Balloom;
 
 enum MovingDirection {
 	LEFT,
@@ -43,6 +47,21 @@ public class Mover {
 	}
 
 	public void update() {
+		if (movable instanceof Player) {
+			Player player = (Player) movable;
+			for (int i = 0; i < player.preparedCollisions.size() ; i++) {
+			Entity collision = player.preparedCollisions.get(i);
+			if (collision instanceof Bomb) {
+				if (!collision.hasSameTilePosition(player)) {
+					player.collisions.add(collision);
+					player.preparedCollisions.remove(i);
+				}
+			} else {
+				player.collisions.add(collision);
+				player.preparedCollisions.remove(i);
+			}
+		}
+		}
 		if (controller.isKeyUpPressed()) {
 			this.movingDirection = MovingDirection.UP;
 		} else if (controller.isKeyDownPressed()) {

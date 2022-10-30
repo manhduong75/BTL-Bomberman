@@ -20,11 +20,19 @@ public abstract class Entity extends Rectangle {
 	}
 
 	public int getTileX() {
-		return (int)this.getX() / 32;
+		if (this instanceof Player) {
+			return ((int)this.getX() + 12) / 32;
+		}
+
+		return ((int)this.getX() + 16) /32;
 	}
 
 	public int getTileY() {
-		return (int)this.getY() / 32;
+		if (this instanceof Player) {
+			return ((int)this.getY() + 8) / 32;
+		}
+
+		return ((int)this.getY() + 16) / 32;
 	}
 
 	public static int tileToPosision(int tileCoordinate) {
