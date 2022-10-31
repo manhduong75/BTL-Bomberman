@@ -55,7 +55,9 @@ public class FinishScreen implements IState {
 		headerBox.relocate(0, 100);
 		headerBox.getChildren().add(header);
 		VBox buttonGroup = new VBox(20);
-		buttonGroup.getChildren().add(nextLevelButton);
+		if (!win  || (win && App.getCurrentLevel() < 3)) {
+			buttonGroup.getChildren().add(nextLevelButton);
+		}
 		buttonGroup.getChildren().add(backButton);
 		buttonGroup.setPrefWidth(App.getWindowWidth());
 		buttonGroup.setAlignment(Pos.CENTER);
